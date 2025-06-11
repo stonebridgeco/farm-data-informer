@@ -8,9 +8,10 @@ import LoadingSpinner from '../LoadingSpinner'
 
 interface AgriculturalDashboardProps {
   selectedCountyFips?: string
+  isMobile?: boolean
 }
 
-export function AgriculturalDashboard({ selectedCountyFips }: AgriculturalDashboardProps) {
+export function AgriculturalDashboard({ selectedCountyFips, isMobile = false }: AgriculturalDashboardProps) {
   const { data, loading, error, status, refreshStatus, refresh } = useAgriculturalData(selectedCountyFips)
 
   if (!selectedCountyFips) {
