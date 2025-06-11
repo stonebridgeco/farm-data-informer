@@ -1,8 +1,12 @@
 import { supabase } from './database'
 
 // USDA NASS API configuration
-const USDA_NASS_BASE_URL = 'https://quickstats.nass.usda.gov/api'
-const USDA_API_KEY = import.meta.env.VITE_USDA_NASS_API_KEY
+const USDA_NASS_BASE_URL = import.meta.env.VITE_USDA_NASS_API_URL || 'https://quickstats.nass.usda.gov/api'
+const USDA_API_KEY = import.meta.env.VITE_USDA_NASS_API_KEY // Optional - USDA NASS has public access
+
+// Rate limiting configuration
+// const RATE_LIMIT_DELAY = 100 // ms between requests (currently unused)
+// let lastRequestTime = 0 // (currently unused)
 
 // USDA NASS API interface
 interface USDANASSParams {

@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
-import { farmDataAPI, County, FarmSuitability } from '../services'
+import { farmDataAPI, County, FarmSuitability, agriculturalDataService } from '../services'
 
 /**
  * Hook for managing county data
@@ -35,6 +35,73 @@ export function useCounty(fips?: string) {
     loading,
     error,
     refetch: fips ? () => fetchCounty(fips) : undefined
+  }
+}
+
+/**
+ * Hook for comprehensive agricultural data using the new service
+ */
+export function useAgriculturalData(fips?: string) {
+  const [data, setData] = useState<any>(null)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [status, setStatus] = useState<any>(null)
+  const [refreshStatus, setRefreshStatus] = useState<any>(null)
+
+  const fetchData = useCallback(async (countyFips: string) => {
+    setLoading(true)
+    setError(null)
+    
+    try {
+      const result = await agriculturalDataService.getComprehensiveCountyData(countyFips)
+      setData(result.data)
+      setStatus(result.status)
+      
+      if (result.errors.length > 0) {
+        setError(result.errors.join('; '))
+      }
+      
+      // Get refresh status
+      const refreshInfo = await agriculturalDataService.getDataRefreshStatus(countyFips)
+      setRefreshStatus(refreshInfo)
+      
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to fetch agricultural data')
+      setData(null)
+      setStatus(null)
+    } finally {
+      setLoading(false)
+    }
+  }, [])
+
+  const refresh = useCallback(async () => {
+    if (fips) {
+      setLoading(true)
+      try {
+        await agriculturalDataService.refreshCountyData(fips)
+        await fetchData(fips)
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to refresh data')
+      } finally {
+        setLoading(false)
+      }
+    }
+  }, [fips, fetchData])
+
+  useEffect(() => {
+    if (fips) {
+      fetchData(fips)
+    }
+  }, [fips, fetchData])
+
+  return {
+    data,
+    loading,
+    error,
+    status,
+    refreshStatus,
+    refresh,
+    refetch: fips ? () => fetchData(fips) : undefined
   }
 }
 

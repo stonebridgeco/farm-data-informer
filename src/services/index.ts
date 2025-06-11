@@ -5,6 +5,11 @@ export { farmDataAPI } from './farmDataAPI'
 // Individual service exports
 export { countyAPI } from './countyAPI'
 export { usdaService } from './usdaService'
+export { noaaService } from './noaaService'
+export { usgsService } from './usgsService'
+export { soilService } from './soilService'
+export { epaService } from './epaService'
+export { agriculturalDataService } from './agriculturalDataService'
 export { cacheService, cachedAPI, CacheKeys } from './cacheService'
 
 // Database exports
