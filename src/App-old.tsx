@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import SimpleMap from './components/Map/SimpleMap'
+import { FarmMap } from './components/Map'
+// import TestMap from './components/Map/TestMap'
 import { Dashboard } from './components/Dashboard'
 import { Header } from './components/Layout'
 import { County, FarmSuitabilityScore } from './types'
@@ -9,6 +10,7 @@ function App() {
   const [suitabilityData, setSuitabilityData] = useState<FarmSuitabilityScore | undefined>(undefined);
 
   const handleAnalyze = (_county: County, farmType: string) => {
+    // Mock analysis - in a real app, this would call the API
     const mockData: FarmSuitabilityScore = {
       overall: 0.75 + Math.random() * 0.2,
       factors: {
@@ -25,25 +27,21 @@ function App() {
 
   const handleSearch = (query: string) => {
     console.log('Searching for:', query);
+    // TODO: Implement search functionality
   };
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#f9fafb' }}>
+    <div className="min-h-screen bg-gray-50">
       <Header 
         onSearch={handleSearch}
         onSettingsClick={() => console.log('Settings clicked')}
         onHelpClick={() => console.log('Help clicked')}
       />
 
-      <main style={{ display: 'flex', height: 'calc(100vh - 80px)' }}>
+      <main className="flex h-[calc(100vh-120px)]">
         {/* Dashboard Section - LEFT SIDE (40%) */}
-        <div style={{ 
-          width: '40%', 
-          borderRight: '1px solid #e5e7eb', 
-          backgroundColor: 'white', 
-          overflowY: 'auto' 
-        }}>
-          <div style={{ padding: '16px' }}>
+        <div className="w-2/5 border-r border-gray-200 bg-white overflow-y-auto">
+          <div className="p-4">
             <Dashboard
               selectedCounty={selectedCounty}
               suitabilityData={suitabilityData}
@@ -53,8 +51,8 @@ function App() {
         </div>
         
         {/* Map Section - RIGHT SIDE (60%) */}
-        <div style={{ flex: '1' }}>
-          <SimpleMap 
+        <div className="flex-1">
+          <FarmMap 
             onCountySelect={setSelectedCounty}
             selectedCounty={selectedCounty}
           />
