@@ -10,7 +10,7 @@
 
 @layer components {
   .btn-primary {
-    @apply bg-primary-600 hover:bg-primary-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200;
+    @apply bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200;
   }
   
   .btn-secondary {
@@ -22,11 +22,11 @@
   }
   
   .map-container {
-    @apply w-full h-full rounded-lg overflow-hidden border border-gray-300;
+    @apply w-full h-full;
   }
   
   .leaflet-container {
-    @apply h-full w-full;
+    @apply h-full w-full z-0;
   }
   
   .leaflet-popup-content-wrapper {
@@ -35,5 +35,10 @@
   
   .leaflet-popup-content {
     @apply m-0;
+  }
+  
+  /* Ensure map controls are above the map */
+  .leaflet-control-container {
+    @apply relative z-10;
   }
 }

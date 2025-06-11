@@ -23,9 +23,12 @@ Create a `.env.local` file in the root directory:
 VITE_SUPABASE_URL=your_supabase_project_url
 VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
 
-# API Keys
+# API Keys  
 VITE_OPENWEATHER_API_KEY=your_openweather_api_key
 VITE_MAPBOX_ACCESS_TOKEN=your_mapbox_access_token
+
+# USDA NASS API (Optional - has rate limits without key)
+VITE_USDA_NASS_API_KEY=your_usda_nass_api_key
 
 # USDA APIs (typically no key required)
 VITE_USDA_NASS_API_URL=https://quickstats.nass.usda.gov/api

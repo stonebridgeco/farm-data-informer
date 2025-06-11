@@ -34,10 +34,10 @@ export const mockCounties: County[] = [
 
 // Mock GeoJSON data for county boundaries
 export const mockCountyGeoJSON = {
-  type: "FeatureCollection",
+  type: "FeatureCollection" as const,
   features: [
     {
-      type: "Feature",
+      type: "Feature" as const,
       properties: {
         name: "Harris County",
         state: "TX",
@@ -45,7 +45,7 @@ export const mockCountyGeoJSON = {
         id: "tx-harris"
       },
       geometry: {
-        type: "Polygon",
+        type: "Polygon" as const,
         coordinates: [[
           [-95.8, 29.4],
           [-94.9, 29.4], 
@@ -56,7 +56,7 @@ export const mockCountyGeoJSON = {
       }
     },
     {
-      type: "Feature", 
+      type: "Feature" as const, 
       properties: {
         name: "Fresno County",
         state: "CA",
@@ -64,7 +64,7 @@ export const mockCountyGeoJSON = {
         id: "ca-fresno"
       },
       geometry: {
-        type: "Polygon",
+        type: "Polygon" as const,
         coordinates: [[
           [-120.2, 36.2],
           [-119.2, 36.2],
@@ -75,7 +75,7 @@ export const mockCountyGeoJSON = {
       }
     },
     {
-      type: "Feature",
+      type: "Feature" as const,
       properties: {
         name: "Story County", 
         state: "IA",
@@ -83,7 +83,7 @@ export const mockCountyGeoJSON = {
         id: "ia-story"
       },
       geometry: {
-        type: "Polygon",
+        type: "Polygon" as const,
         coordinates: [[
           [-94.0, 41.8],
           [-93.3, 41.8],
@@ -94,7 +94,7 @@ export const mockCountyGeoJSON = {
       }
     },
     {
-      type: "Feature",
+      type: "Feature" as const,
       properties: {
         name: "Wayne County",
         state: "NY", 
@@ -102,7 +102,7 @@ export const mockCountyGeoJSON = {
         id: "ny-wayne"
       },
       geometry: {
-        type: "Polygon",
+        type: "Polygon" as const,
         coordinates: [[
           [-77.4, 43.0],
           [-76.7, 43.0],
