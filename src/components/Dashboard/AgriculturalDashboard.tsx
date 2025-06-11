@@ -11,7 +11,7 @@ interface AgriculturalDashboardProps {
   isMobile?: boolean
 }
 
-export function AgriculturalDashboard({ selectedCountyFips, isMobile = false }: AgriculturalDashboardProps) {
+export function AgriculturalDashboard({ selectedCountyFips, isMobile: _isMobile = false }: AgriculturalDashboardProps) {
   const { data, loading, error, status, refreshStatus, refresh } = useAgriculturalData(selectedCountyFips)
 
   if (!selectedCountyFips) {

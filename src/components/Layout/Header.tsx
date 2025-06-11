@@ -270,19 +270,5 @@ const Header: React.FC<HeaderProps> = ({
     </header>
   );
 };
-              padding: '6px 12px',
-              borderRadius: '6px',
-              cursor: 'pointer',
-              fontSize: '0.875rem'
-            }}
-          >
-            <Settings style={{ width: '16px', height: '16px' }} />
-            Settings
-          </button>
-        </div>
-      </div>
-    </header>
-  );
-};
 
 export { Header };
