@@ -83,8 +83,6 @@ class USDAService {
    * Get crop data for a specific county
    */
   async getCropData(state: string, countyCode: string, year?: number): Promise<any[]> {
-    const cacheKey = `crops_${state}_${countyCode}_${year || 'latest'}`
-    
     // Check cache first
     const cached = await this.getCachedData('crops', state, countyCode, year)
     if (cached) {

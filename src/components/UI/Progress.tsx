@@ -6,7 +6,7 @@ interface ProgressProps {
   max?: number;
   label?: string;
   showPercentage?: boolean;
-  variant?: 'default' | 'success' | 'warning' | 'danger';
+  variant?: 'default' | 'success' | 'warning' | 'danger' | 'info';
   size?: 'sm' | 'md' | 'lg';
   className?: string;
 }
@@ -26,7 +26,8 @@ const Progress: React.FC<ProgressProps> = ({
     default: 'bg-blue-600',
     success: 'bg-green-600',
     warning: 'bg-yellow-600',
-    danger: 'bg-red-600'
+    danger: 'bg-red-600',
+    info: 'bg-blue-500'
   };
   
   const sizes = {

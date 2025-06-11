@@ -222,12 +222,10 @@ export class CachedAPIService {
    * Invalidate cache keys matching a pattern
    */
   invalidatePattern(pattern: string): void {
-    // For memory cache
-    for (const key of this.cache.memoryCache.keys()) {
-      if (key.includes(pattern)) {
-        this.cache.delete(key)
-      }
-    }
+    // TODO: Implement pattern-based invalidation
+    console.log(`Pattern invalidation requested for: ${pattern}`)
+    // For now, just clear all cache
+    this.cache.clear()
 
     // For localStorage (scan keys)
     try {

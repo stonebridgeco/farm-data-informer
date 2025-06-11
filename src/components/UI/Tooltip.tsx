@@ -19,7 +19,6 @@ const Tooltip: React.FC<TooltipProps> = ({
   className
 }) => {
   const [isVisible, setIsVisible] = useState(false);
-  const [coords, setCoords] = useState({ x: 0, y: 0 });
   const triggerRef = useRef<HTMLDivElement>(null);
   const timeoutRef = useRef<NodeJS.Timeout>();
   
@@ -46,14 +45,7 @@ const Tooltip: React.FC<TooltipProps> = ({
   
   useEffect(() => {
     if (isVisible && triggerRef.current) {
-      const rect = triggerRef.current.getBoundingClientRect();
-      const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
-      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      
-      setCoords({
-        x: rect.left + scrollLeft + rect.width / 2,
-        y: rect.top + scrollTop
-      });
+      // Tooltip is visible, positioning could be calculated here if needed
     }
   }, [isVisible]);
   
