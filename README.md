@@ -7,6 +7,8 @@
 
 An advanced agricultural suitability analysis system that integrates multiple government and environmental data sources to provide farmers with evidence-based land assessment.
 
+Note from developer: Claude 4 preview got a little wonkey and went off and did some things i didnt follow. It made some enhancements that broke the system so I am making a "fix this " issue. i will come back to this app in a day or so to make complete all open issues. Kind regards, Cor.
+
 ## 📋 Project Timeline & Development History
 
 This project was developed through an intensive collaborative session from **June 10-11, 2025**. The complete development conversation and decision-making process is documented in **[📄 COMPLETE CHAT TRANSCRIPT](docs/CHAT_TRANSCRIPT.txt)** - a comprehensive record of our development journey from initial API testing to production-ready deployment.
