@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Production Build API Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .test-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .success { color: #059669; }
+        .error { color: #dc2626; }
+        .test-result {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            border-left: 4px solid #ccc;
+        }
+        .test-result.success { 
+            background-color: #f0fdf4; 
+            border-left-color: #059669; 
+        }
+        .test-result.error { 
+            background-color: #fef2f2; 
+            border-left-color: #dc2626; 
+        }
+        button {
+            background: #2563eb;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #1d4ed8;
+        }
+        button:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+        .loading {
+            color: #6b7280;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🧪 Production Build API Test (Browser)</h1>
+        <p>Testing APIs from browser context instead of Node.js</p>
+        
+        <button onclick="runBrowserTests()" id="testBtn">Run Browser API Tests</button>
+        
+        <div id="results"></div>
+    </div>
+
+    <script>
+        // API configurations from production build
+        const APIS = {
+            usda_nass: {
+                key: '88E78590-B183-3368-BE7C-5BA018A27A8D',
+                base: 'https://quickstats.nass.usda.gov/api'
+            },
+            openweather: {
+                key: 'dabc85603c4364f216151472dd8ef575',
+                base: 'https://api.openweathermap.org/data/2.5'
+            },
+            epa_attains: {
+                base: 'https://attains.epa.gov/attains-public/api'
+            },
+            elevation: {
+                base: 'https://api.open-elevation.com/api/v1'
+            }
+        };
+
+        const TEST_COUNTY_FIPS = '19169'; // Story County, Iowa
+        const TEST_STATE = 'IA';
+
+        function addResult(title, success, message, details = '') {
+            const resultsDiv = document.getElementById('results');
+            const resultDiv = document.createElement('div');
+            resultDiv.className = `test-result ${success ? 'success' : 'error'}`;
+            
+            const icon = success ? '✅' : '❌';
+            resultDiv.innerHTML = `
+                <strong>${icon} ${title}</strong><br>
+                ${message}
+                ${details ? `<br><small>${details}</small>` : ''}
+            `;
+            
+            resultsDiv.appendChild(resultDiv);
+        }
+
+        async function testUSDANASS() {
+            try {
+                const params = new URLSearchParams({
+                    key: APIS.usda_nass.key,
+                    source_desc: 'CENSUS',
+                    sector_desc: 'CROPS',
+                    group_desc: 'FIELD CROPS',
+                    commodity_desc: 'CORN',
+                    statisticcat_desc: 'YIELD',
+                    agg_level_desc: 'COUNTY',
+                    state_alpha: TEST_STATE,
+                    county_code: TEST_COUNTY_FIPS.slice(-3),
+                    year: '2017',
+                    format: 'JSON'
+                });
+                
+                const url = `${APIS.usda_nass.base}/api_GET/?${params}`;
+                const response = await fetch(url);
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    const records = data.data?.length || 0;
+                    const yield_info = data.data?.[0] ? `${data.data[0].Value} ${data.data[0].unit_desc}` : 'N/A';
+                    addResult('USDA NASS API', true, `Found ${records} records`, `Corn Yield: ${yield_info}`);
+                    return true;
+                } else {
+                    addResult('USDA NASS API', false, `Failed with status ${response.status}`, `URL: ${url}`);
+                    return false;
+                }
+            } catch (error) {
+                addResult('USDA NASS API', false, `Error: ${error.message}`);
+                return false;
+            }
+        }
+
+        async function testOpenWeather() {
+            try {
+                const lat = 42.0308;
+                const lon = -93.6319;
+                const url = `${APIS.openweather.base}/weather?lat=${lat}&lon=${lon}&appid=${APIS.openweather.key}&units=imperial`;
+                
+                const response = await fetch(url);
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    addResult('OpenWeather API', true, `${data.main.temp}°F, ${data.weather[0].description}`, `Location: ${data.name}`);
+                    return true;
+                } else {
+                    addResult('OpenWeather API', false, `Failed with status ${response.status}`);
+                    return false;
+                }
+            } catch (error) {
+                addResult('OpenWeather API', false, `Error: ${error.message}`);
+                return false;
+            }
+        }
+
+        async function testEPAATTAINS() {
+            try {
+                const url = `${APIS.epa_attains.base}/domains?state=${TEST_STATE}`;
+                const response = await fetch(url);
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    addResult('EPA ATTAINS API', true, `Found ${data.length || 0} domains`);
+                    return true;
+                } else {
+                    addResult('EPA ATTAINS API', false, `Failed with status ${response.status}`);
+                    return false;
+                }
+            } catch (error) {
+                addResult('EPA ATTAINS API', false, `Error: ${error.message}`);
+                return false;
+            }
+        }
+
+        async function testOpenElevation() {
+            try {
+                const lat = 42.0308;
+                const lon = -93.6319;
+                const url = `${APIS.elevation.base}/lookup?locations=${lat},${lon}`;
+                
+                const response = await fetch(url);
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    addResult('Open Elevation API', true, `${data.results[0].elevation}m elevation`);
+                    return true;
+                } else {
+                    addResult('Open Elevation API', false, `Failed with status ${response.status}`);
+                    return false;
+                }
+            } catch (error) {
+                addResult('Open Elevation API', false, `Error: ${error.message}`);
+                return false;
+            }
+        }
+
+        async function runBrowserTests() {
+            const btn = document.getElementById('testBtn');
+            const resultsDiv = document.getElementById('results');
+            
+            btn.disabled = true;
+            btn.textContent = 'Testing...';
+            resultsDiv.innerHTML = '<div class="loading">Running browser-based API tests...</div>';
+            
+            const results = [];
+            
+            results.push(await testUSDANASS());
+            results.push(await testOpenWeather());
+            results.push(await testEPAATTAINS());
+            results.push(await testOpenElevation());
+            
+            const passed = results.filter(r => r).length;
+            const total = results.length;
+            
+            const summaryDiv = document.createElement('div');
+            summaryDiv.className = 'test-container';
+            summaryDiv.innerHTML = `
+                <h3>🎯 Browser Test Summary</h3>
+                <p><strong>Passed:</strong> ${passed}/${total}</p>
+                <p><strong>Status:</strong> ${passed === total ? '🎉 All APIs working!' : '⚠️ Some APIs failed'}</p>
+            `;
+            
+            resultsDiv.appendChild(summaryDiv);
+            
+            btn.disabled = false;
+            btn.textContent = 'Run Browser API Tests';
+        }
+    </script>
+</body>
+</html>

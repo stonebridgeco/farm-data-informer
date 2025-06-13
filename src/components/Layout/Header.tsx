@@ -38,7 +38,7 @@ const Header: React.FC<HeaderProps> = ({
           </div>
           <div>
             <h1 style={{ fontSize: '1.25rem', fontWeight: 'bold', color: 'white', margin: 0 }}>
-              farm data informer
+              farm data informer - satellite map
             </h1>
             <p style={{ fontSize: '0.875rem', color: 'rgba(255, 255, 255, 0.8)', margin: 0 }}>
               Agricultural Suitability Analysis Platform

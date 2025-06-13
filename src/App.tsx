@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import SimpleMap from './components/Map/SimpleMap'
+import SimpleSatelliteMap from './components/Map/SimpleSatelliteMap'
 import { Dashboard } from './components/Dashboard'
 import AgriculturalDashboard from './components/Dashboard/AgriculturalDashboard'
 import { Header } from './components/Layout'
@@ -7,22 +7,13 @@ import { County, FarmSuitabilityScore } from './types'
 
 function App() {
   const [selectedCounty, setSelectedCounty] = useState<County | null>(null);
-  const [suitabilityData, setSuitabilityData] = useState<FarmSuitabilityScore | undefined>(undefined);
+  const [suitabilityData] = useState<FarmSuitabilityScore | undefined>(undefined);
   const [activeTab, setActiveTab] = useState<'overview' | 'agricultural'>('agricultural');
 
-  const handleAnalyze = (_county: County, farmType: string) => {
-    const mockData: FarmSuitabilityScore = {
-      overall: 0.75 + Math.random() * 0.2,
-      factors: {
-        soil: 0.8 + Math.random() * 0.15,
-        climate: 0.9 + Math.random() * 0.1,
-        water: 0.7 + Math.random() * 0.2,
-        terrain: 0.85 + Math.random() * 0.1,
-        market: 0.6 + Math.random() * 0.3
-      },
-      farmType: farmType as any
-    };
-    setSuitabilityData(mockData);
+  const handleAnalyze = async (county: County, farmType: string) => {
+    // TODO: Replace with real API call to agricultural data service
+    console.log('Analyzing', county.name, 'for', farmType);
+    // setSuitabilityData(realApiData);
   };
 
   const handleSearch = (query: string) => {
@@ -88,7 +79,7 @@ function App() {
           <div style={{ height: 'calc(100% - 49px)' }}>
             {activeTab === 'agricultural' ? (
               <AgriculturalDashboard 
-                selectedCountyFips={selectedCounty?.fips}
+                selectedCounty={selectedCounty}
               />
             ) : (
               <div style={{ padding: '16px' }}>
@@ -102,12 +93,9 @@ function App() {
           </div>
         </div>
         
-        {/* Map Section - RIGHT SIDE (60%) */}
+        {/* Satellite Map Section - RIGHT SIDE (60%) */}
         <div style={{ flex: '1' }}>
-          <SimpleMap 
-            onCountySelect={setSelectedCounty}
-            selectedCounty={selectedCounty}
-          />
+          <SimpleSatelliteMap />
         </div>
       </main>
     </div>

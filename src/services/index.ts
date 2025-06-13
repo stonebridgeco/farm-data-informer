@@ -22,6 +22,3 @@ export type {
   USDADataCache,
   MarketAccess
 } from './database'
-
-// Mock data for development
-export { mockCounties, mockCountyGeoJSON } from './mockData'
