@@ -7,7 +7,6 @@ import { County, FarmSuitabilityScore } from './types'
 
 function App() {
   const [selectedCounty, setSelectedCounty] = useState<County | null>(null);
-  const [selectedLocation, setSelectedLocation] = useState<{lat: number, lon: number} | null>(null);
   const [suitabilityData] = useState<FarmSuitabilityScore | undefined>(undefined);
   const [activeTab, setActiveTab] = useState<'overview' | 'agricultural'>('agricultural');
 
