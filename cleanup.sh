@@ -14,8 +14,8 @@ find . -name "*.log" -delete 2>/dev/null || true
 # Remove duplicate or outdated documentation
 echo "Cleaning up documentation..."
 rm -f "# Code Citations.md" 2>/dev/null || true
-rm -f sonnet4_res.md 2>/dev/null || true
-rm -f DATABASE_SETUP_REQUIRED.md 2>/dev/null || true
+rm -f sonnet4_res.md 2>/dev/null || false
+rm -f DATABASE_SETUP_REQUIRED.md 2>/dev/null || false
 
 # Ensure proper directory structure
 echo "Ensuring directory structure..."
@@ -32,17 +32,3 @@ if [ "$1" = "--deep" ]; then
     rm -f package-lock.json
     echo "Run 'npm install' to restore dependencies"
 fi
-
-# Display current structure
-echo "✅ Cleanup complete!"
-echo ""
-echo "📁 Current project structure:"
-echo "├── docs/           # Project documentation"
-echo "├── tests/          # Integration tests"
-echo "├── src/            # Source code"
-echo "│   └── services/   # API integration services"
-echo "├── public/         # Static assets"
-echo "└── README.md       # Project overview"
-echo ""
-echo "📊 System Status: Production Ready"
-echo "🔗 See docs/PROJECT_STATUS.md for details"

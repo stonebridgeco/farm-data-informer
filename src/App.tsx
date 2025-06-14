@@ -7,8 +7,25 @@ import { County, FarmSuitabilityScore } from './types'
 
 function App() {
   const [selectedCounty, setSelectedCounty] = useState<County | null>(null);
+  const [selectedLocation, setSelectedLocation] = useState<{lat: number, lon: number} | null>(null);
   const [suitabilityData] = useState<FarmSuitabilityScore | undefined>(undefined);
   const [activeTab, setActiveTab] = useState<'overview' | 'agricultural'>('agricultural');
+
+  const handleLocationClick = (lat: number, lon: number) => {
+    setSelectedLocation({ lat, lon });
+    
+    // Create a mock county from the clicked location for AgriculturalDashboard
+    const mockCounty: County = {
+      id: `${lat}-${lon}`,
+      name: `Location ${lat.toFixed(2)}, ${lon.toFixed(2)}`,
+      state: 'IA', // Default to Iowa for now
+      fips: '19999', // Mock FIPS
+      coordinates: [lat, lon]
+    };
+    
+    setSelectedCounty(mockCounty);
+    console.log('Location selected:', lat, lon);
+  };
 
   const handleAnalyze = async (county: County, farmType: string) => {
     // TODO: Replace with real API call to agricultural data service
@@ -95,7 +112,7 @@ function App() {
         
         {/* Satellite Map Section - RIGHT SIDE (60%) */}
         <div style={{ flex: '1' }}>
-          <SimpleSatelliteMap />
+          <SimpleSatelliteMap onLocationClick={handleLocationClick} />
         </div>
       </main>
     </div>

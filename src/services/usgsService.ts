@@ -1,6 +1,7 @@
 import { supabase } from './database'
 
-// Elevation API configuration
+// USGS Elevation API configuration
+const USGS_ELEVATION_SOAP_URL = 'https://nationalmap.gov/epqs/pqs.php'
 const OPEN_ELEVATION_URL = 'https://api.open-elevation.com/api/v1'
 
 // Rate limiting configuration
